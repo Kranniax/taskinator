@@ -26,6 +26,7 @@ var createTaskHandeler = function (event) {
     listItemEl.appendChild(taskInfoEl);
 
   taskToDoEl.appendChild(listItemEl);
+  console.dir(listItemEl);
 };
 
 formEl.addEventListener("submit", createTaskHandeler);
