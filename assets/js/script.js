@@ -1,5 +1,7 @@
 var formEl = document.querySelector("#task-form");
 var taskToDoEl = document.querySelector("#tasks-to-do");
+var pageContentEl = document.querySelector("#page-content");
+
 var taskIdCounter = 0;
 
 var taskFormHandler = function (event) {
@@ -8,7 +10,7 @@ var taskFormHandler = function (event) {
   var taskNameInput = document.querySelector("input[name='task-name']").value;
   var taskTypeInput = document.querySelector("select[name='task-type']").value;
 
-  // Empty strings and the number 0 are evaluated as falsy value. 
+  // Empty strings and the number 0 are evaluated as falsy value.
   // When using !taskNameInput, we are checking if the variable is empty, by
   // asking if it's a falsy value.
   if (!taskNameInput || !taskTypeInput) {
@@ -16,7 +18,7 @@ var taskFormHandler = function (event) {
     return false;
   }
 
-  // Reset the form inputs after a submission. 
+  // Reset the form inputs after a submission.
   formEl.reset();
 
   //package up data as object.
@@ -53,7 +55,6 @@ var createTaskEl = function (taskDataObj) {
   listItemEl.appendChild(taskInfoEl);
   var taskActionEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionEl);
-  
 
   //add entire list item to list.
   taskToDoEl.appendChild(listItemEl);
@@ -61,7 +62,7 @@ var createTaskEl = function (taskDataObj) {
   // increment counter to keep each id unique.
   taskIdCounter++;
 };
-var createTaskActions = function (taskId){
+var createTaskActions = function (taskId) {
   var actionContainerEl = document.createElement("div");
   actionContainerEl.className = "take-actions";
 
@@ -79,7 +80,6 @@ var createTaskActions = function (taskId){
   deleteButtonEl.className = "btn delete-btn";
   deleteButtonEl.setAttribute("data-task-id", taskId);
 
-
   actionContainerEl.appendChild(deleteButtonEl);
 
   // create selection dropdown
@@ -88,8 +88,8 @@ var createTaskActions = function (taskId){
   statusSelectEl.setAttribute("name", "status-change");
   statusSelectEl.setAttribute("data-task-id", taskId);
   var statusChoices = ["To Do", "In Progress", "Completed"];
-  
-  for (var i = 0; i < statusChoices.length; i++){
+
+  for (var i = 0; i < statusChoices.length; i++) {
     // create option elements
     var statusOptionEl = document.createElement("option");
     statusOptionEl.textContent = statusChoices[i];
@@ -97,7 +97,6 @@ var createTaskActions = function (taskId){
 
     // append to select.
     statusSelectEl.appendChild(statusOptionEl);
-
   }
 
   actionContainerEl.appendChild(statusSelectEl);
@@ -105,4 +104,22 @@ var createTaskActions = function (taskId){
   return actionContainerEl;
 };
 
+var deleteTask = function (taskId) {
+  var taskSelected = document.querySelector(
+    ".task-item[data-task-id='" + taskId + "']"
+  );
+  taskSelected.remove();
+};
+
+var taskButtonHandler = function (event) {
+  console.log(event.target);
+
+  if (event.target.matches(".delete-btn")) {
+    // get the element's task id.
+    var taskId = event.target.getAttribute("data-task-id");
+    deleteTask(taskId);
+  }
+};
+
 formEl.addEventListener("submit", taskFormHandler);
+pageContentEl.addEventListener("click", taskButtonHandler);
