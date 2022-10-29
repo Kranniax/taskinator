@@ -63,6 +63,9 @@ var completeEditTask = function (taskName, taskType, taskId) {
     }
   }
 
+  // save any changes to localStorage
+  saveTasks();
+
   alert("Task Updated!");
 
   // reset form when finsihed editing.
@@ -71,9 +74,6 @@ var completeEditTask = function (taskName, taskType, taskId) {
 };
 
 var createTaskEl = function (taskDataObj) {
-  // console.log(taskDataObj);
-  // console.log(taskDataObj.status);
-
   // create list item
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
@@ -100,6 +100,9 @@ var createTaskEl = function (taskDataObj) {
 
   // add task to array of objects.
   tasks.push(taskDataObj);
+
+  // save new tasks to localStorage
+  saveTasks();
 
   var taskActionEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionEl);
@@ -162,20 +165,21 @@ var deleteTask = function (taskId) {
   var updateTaskArr = [];
 
   // loop through current tasks
-  for (var i = 0; i < tasks.length; i++){
+  for (var i = 0; i < tasks.length; i++) {
     // if task[i].id doesn't match the value of taskId, lets keep the tasks and push it into the new array.
-    if (tasks[i].id !== parseInt(taskId)){
+    if (tasks[i].id !== parseInt(taskId)) {
       updateTaskArr.push(tasks[i]);
     }
   }
 
   //reassign tasks array to be the same as updatedTaskArr.
   tasks = updateTaskArr;
+
+  // save any changes to localStorage.
+  saveTasks();
 };
 
 var editTask = function (taskId) {
-  console.log("Editing task #" + taskId);
-
   // get task list item element
   var taskSelected = document.querySelector(
     ".task-item[data-task-id= '" + taskId + "']"
@@ -196,8 +200,6 @@ var editTask = function (taskId) {
 var taskButtonHandler = function (event) {
   //get target element from event.
   var targetEl = event.target;
-
-  console.log(targetEl);
 
   if (targetEl.matches(".edit-btn")) {
     // get the element's task id.
@@ -229,12 +231,19 @@ var taskStatusChangeHandler = function (event) {
     tasksCompletedEl.appendChild(taskSelected);
   }
 
-  for (var i = 0; i < tasks.length; i++){
-    if (tasks[i].id === parseInt(taskId)){
+  for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
       tasks[i].status = statusValue;
     }
   }
-  console.log(tasks);
+
+  //save any changes to localStorage.
+  saveTasks();
+};
+
+var saveTasks = function () {
+  // localStorage can only store one type of data: strings.
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 formEl.addEventListener("submit", taskFormHandler);
