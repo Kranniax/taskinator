@@ -94,8 +94,6 @@ var createTaskEl = function (taskDataObj) {
   var taskActionsEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionsEl);
 
-  //add entire list item to list.
-  //taskToDoEl.appendChild(listItemEl);
   switch (taskDataObj.status) {
     case "to do":
       taskActionsEl.querySelector(
@@ -118,8 +116,9 @@ var createTaskEl = function (taskDataObj) {
     default:
       console.log("Something went wrong!");
   }
-
-  //taskDataObj.id = taskIdCounter;
+  
+  // save task as an object with name, type, status, and id properties then push it into tasks array
+  taskDataObj.id = taskIdCounter;
   // add task to array of objects.
   tasks.push(taskDataObj);
   // save new tasks to localStorage
