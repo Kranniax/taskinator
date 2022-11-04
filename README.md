@@ -13,7 +13,7 @@ Taskinator will allow you to organize your personal to-do list items by using a 
 
 ## Deployed Website
 
-<https://kranniax.github.io/robot-gladiators/>
+<https://kranniax.github.io/taskinator/>
 
 ## Contributions
 
